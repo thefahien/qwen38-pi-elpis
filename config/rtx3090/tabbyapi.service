@@ -1,0 +1,20 @@
+[Unit]
+Description=TabbyAPI + exllamav3: pi-adapted Qwen3.8-27B EXL3 3.5bpw + DFlash2 (NVIDIA)
+After=network-online.target
+Wants=network-online.target
+
+[Service]
+Type=simple
+WorkingDirectory=/opt/tabbyAPI
+Environment=CUDA_VISIBLE_DEVICES=0
+Environment=OMP_NUM_THREADS=8
+Environment=PYTHONUNBUFFERED=1
+Environment=PYTORCH_CUDA_ALLOC_CONF=expandable_segments:True
+ExecStart=/opt/venv/bin/python main.py --config /opt/tabbyAPI/config.yml
+Restart=on-failure
+RestartSec=10
+TimeoutStopSec=30
+MemoryMax=30G
+
+[Install]
+WantedBy=multi-user.target

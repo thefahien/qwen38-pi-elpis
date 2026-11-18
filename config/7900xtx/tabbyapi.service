@@ -1,0 +1,21 @@
+[Unit]
+Description=qwen38-pi-xtx: TabbyAPI + exllamav3-rocm, Qwen3.8-27B + harness-hub pi LoRA merged, EXL3 3.5bpw + DFlash2, RX 7900 XTX, thinking off
+After=network-online.target
+Wants=network-online.target
+
+[Service]
+Type=simple
+WorkingDirectory=/opt/elpis-xtx/tabbyAPI
+Environment=HIP_VISIBLE_DEVICES=0
+Environment=OMP_NUM_THREADS=8
+Environment=PYTHONUNBUFFERED=1
+Environment=EXL3_ABLATION=0
+ExecStart=/bin/bash -c 'source /opt/elpis-xtx/venv/bin/activate && exec /opt/elpis-xtx/exllamav3-rocm/rocm/scripts/run_tabbyapi.sh /opt/elpis-xtx/tabbyAPI/config.yml /opt/elpis-xtx/tabbyAPI'
+Restart=on-failure
+RestartSec=10
+TimeoutStopSec=30
+OOMScoreAdjust=-900
+MemoryMax=17G
+
+[Install]
+WantedBy=multi-user.target

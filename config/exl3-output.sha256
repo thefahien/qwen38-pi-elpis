@@ -1,0 +1,5 @@
+96b23ce33adcff6f417f9bbaa333dd48be7b699e335e5516112f7ebc794a39e9  qwen38-pi-exl3-3.5/model-00001-of-00002.safetensors
+668e60d3a69b6c0d9817f0b19cfc31651d1ac7edf9607c03aec5738adc705a3d  qwen38-pi-exl3-3.5/model-00002-of-00002.safetensors
+e29783a4c871b7ae4239638402f0f21b6c834e6d674e0c05ee1b0686448d89cc  qwen38-pi-exl3-3.5/model.safetensors.index.json
+edddbbd9360e3ca46b4fa45b55c677b4764d4723cf7dd273d34ccb6998f5e2bc  qwen38-pi-exl3-3.5/quantization_config.json
+823bd62bad2e4439cddc25d35c93fef5bd11b8ab767a23e4d0eee8c9b2c6eed8  qwen38-pi-exl3-3.5/config.json

@@ -1,0 +1,41 @@
+# TabbyAPI config: pi-adapted Qwen3.8-27B (EXL3 3.5bpw) + DFlash2 draft on an RX 7900 XTX (gfx1100, 24 GB).
+# exllamav3-rocm (phoenixhaxor) @360c902 + 2 patches + its patched TabbyAPI, ROCm 7.2.4 (setup: elpis-on-7900xtx).
+# The ROCm port has Q8/FP16 cache kernels only (no Q4), so the window is 196608, not the 262144 of the NVIDIA config.
+# Thinking is forced off: the adapter was trained and evaluated with thinking off.
+network:
+  host: 0.0.0.0
+  port: 8098
+  disable_auth: false
+  api_servers: ["OAI"]
+
+logging:
+  log_prompt: false
+  log_generation_params: false
+  log_requests: false
+
+model:
+  model_dir: /models
+  model_name: qwen38-pi-exl3-3.5
+  backend: exllamav3
+  max_seq_len: 196608
+  cache_size: 196608
+  cache_mode: Q8
+  gpu_split_auto: true
+  autosplit_reserve: [512]
+  chunk_size: 2048
+  max_batch_size: 1
+  vision: false
+  reasoning: true
+  reasoning_start_token: "<think>"
+  reasoning_end_token: "</think>"
+  tool_format: qwen3_coder
+  template_vars_force: {enable_thinking: false}
+
+draft_model:
+  draft_mode: model
+  draft_model_dir: /models
+  draft_model_name: mia-dflash2-50
+  draft_cache_mode: Q4
+
+memory:
+  sysmem_recurrent_cache: 4096

@@ -1,0 +1,40 @@
+# TabbyAPI config: pi-adapted Qwen3.8-27B (EXL3 3.5bpw) + DFlash2 draft on one 24 GB NVIDIA card (tested: RTX 3090).
+# Stock exllamav3 1.6.7 (cu128) + TabbyAPI. 262144 context with a Q4 cache fits in ~19 GB.
+# Thinking is forced off: the adapter was trained and evaluated with thinking off.
+network:
+  host: 0.0.0.0
+  port: 8096
+  disable_auth: false
+  api_servers: ["OAI"]
+
+logging:
+  log_prompt: false
+  log_generation_params: false
+  log_requests: false
+
+model:
+  model_dir: /models
+  model_name: qwen38-pi-exl3-3.5
+  backend: exllamav3
+  max_seq_len: 262144
+  cache_size: 262144
+  cache_mode: "4,4"
+  gpu_split_auto: true
+  autosplit_reserve: [512]
+  chunk_size: 2048
+  max_batch_size: 1
+  vision: false
+  reasoning: true
+  reasoning_start_token: "<think>"
+  reasoning_end_token: "</think>"
+  tool_format: qwen3_coder
+  template_vars_force: {enable_thinking: false}
+
+draft_model:
+  draft_mode: model
+  draft_model_dir: /models
+  draft_model_name: mia-dflash2-50
+  draft_cache_mode: "4,4"
+
+memory:
+  sysmem_recurrent_cache: 4096

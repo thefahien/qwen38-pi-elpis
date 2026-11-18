@@ -1,0 +1,96 @@
+{
+ "label": "7900xtx-qwen38-pi-exl3rocm_nothink",
+ "base": "http://localhost:8096",
+ "runs": {
+  "code": {
+   "reps": [
+    {
+     "s": 3.41,
+     "ct": 512,
+     "tok_s": 149.9,
+     "server_decode_tok_s": 158.84,
+     "accepted": 431,
+     "rejected": 136
+    },
+    {
+     "s": 3.42,
+     "ct": 512,
+     "tok_s": 149.7,
+     "server_decode_tok_s": 158.36,
+     "accepted": 431,
+     "rejected": 136
+    },
+    {
+     "s": 3.42,
+     "ct": 512,
+     "tok_s": 149.7,
+     "server_decode_tok_s": 158.34,
+     "accepted": 431,
+     "rejected": 136
+    }
+   ],
+   "best": 149.9,
+   "sample": "```python\nfrom typing import Optional\n\n\nclass Node:\n    \"\"\"Doubly linked list node for LRU cache.\"\"\"\n    __slots__ = ('key', 'value', 'prev', 'next')\n\n    def __init__(self, key: int = 0, value: int = 0) -> None:\n        self.key = key\n        self.value = value\n        self.prev: Optional['Node'] ="
+  },
+  "math": {
+   "reps": [
+    {
+     "s": 4.22,
+     "ct": 512,
+     "tok_s": 121.3,
+     "server_decode_tok_s": 128.23,
+     "accepted": 412,
+     "rejected": 288
+    },
+    {
+     "s": 4.22,
+     "ct": 512,
+     "tok_s": 121.4,
+     "server_decode_tok_s": 128.2,
+     "accepted": 412,
+     "rejected": 288
+    },
+    {
+     "s": 4.23,
+     "ct": 512,
+     "tok_s": 121.2,
+     "server_decode_tok_s": 127.99,
+     "accepted": 412,
+     "rejected": 288
+    }
+   ],
+   "best": 121.4,
+   "sample": "Here is the step-by-step solution to the problem.\n\n### Step 1: Calculate the total amount of money Priya spent\n\nPriya paid with two $\\$50$ notes and received $\\$43$ in change.\nFirst, determine the total amount of cash she handed over:\n$$ \\text{Total Cash} = 2 \\times \\$50 = \\$100 $$\n\nNext, subtract t"
+  },
+  "prose": {
+   "reps": [
+    {
+     "s": 7.94,
+     "ct": 512,
+     "tok_s": 64.5,
+     "server_decode_tok_s": 65.67,
+     "accepted": 317,
+     "rejected": 1048
+    },
+    {
+     "s": 7.94,
+     "ct": 512,
+     "tok_s": 64.5,
+     "server_decode_tok_s": 65.7,
+     "accepted": 317,
+     "rejected": 1048
+    },
+    {
+     "s": 7.95,
+     "ct": 512,
+     "tok_s": 64.4,
+     "server_decode_tok_s": 65.64,
+     "accepted": 317,
+     "rejected": 1048
+    }
+   ],
+   "best": 64.5,
+   "sample": "The fog rolled in thick and gray, swallowing the horizon whole. Elias wiped the condensation from the lens, his breath misting in the cold air of the lantern room. He had kept the Beacon Point Light for thirty years. Thirty years of solitude, of oil and wick, of the rhythmic *thump-thump* of the rot"
+  }
+ }
+}

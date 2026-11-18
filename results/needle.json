@@ -1,0 +1,34 @@
+{
+  "rtx3090": {
+    "prompt_tokens": 251842,
+    "needle_depth": 0.97,
+    "expected": "234862",
+    "answer": "234862",
+    "found": true,
+    "prefill_tok_s": 532.1,
+    "wall_s": 473.9,
+    "peak_vram_mib": 19050,
+    "card": "RTX 3090",
+    "ctx": 262144,
+    "cache": "Q4",
+    "vram_total_mib": 24576
+  },
+  "7900xtx": {
+    "prompt_tokens": null,
+    "approx_words": 37748,
+    "needle_depth": 0.97,
+    "expected": "279471",
+    "answer": "279471",
+    "found": true,
+    "prefill_tok_s": 0,
+    "wall_s": 242.9,
+    "peak_vram_mib": 24225,
+    "card": "RX 7900 XTX",
+    "prompt_tokens_server": 188408,
+    "prefill_tok_s_server": 777,
+    "ctx": 196608,
+    "cache": "Q8",
+    "vram_total_mib": 24560,
+    "note": "peak_vram_mib read from amdgpu mem_info_vram_used; prompt tokens and prefill rate from the TabbyAPI log line"
+  }
+}

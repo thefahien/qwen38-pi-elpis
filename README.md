@@ -5,8 +5,9 @@ Qwen3.8-27B for the [pi](https://github.com/earendil-works/pi) coding agent, at 
 GPU, NVIDIA or AMD. The LoRA is merged into the weights, converted to EXL3 3.5 bpw, and served by exllamav3 / TabbyAPI with a
 DFlash2 speculative-decoding draft.
 
-On an RTX 3090 this is **~5x the speed of the adapter's own llama.cpp route** (GGUF + `--lora`, ~34 tok/s on the same card),
-for a llmbench score within about one item of it.
+On an RTX 3090 this is **4.4x the generation speed of the adapter's own llama.cpp route** (GGUF + `--lora`): 146.6 vs
+33.3 tok/s over the same 40 benchmark items (all completion tokens / all wall time). The llmbench score drops by about one item
+(0.908 vs 0.934: one HumanEval task lost, one 3D scene slightly better).
 
 ## Results
 
@@ -25,11 +26,11 @@ Greedy, thinking off, 512-token replies, one request at a time, tok/s = completi
 
 Quality (llmbench quick suites, temperature 0, thinking off; 34 items in code/reasoning/web/3D/agent, plus 6 SVG drawings):
 
-| | avg of 34 | SVG (6) | time for all 40 |
-|---|---|---|---|
-| RTX 3090, llama.cpp GGUF + `--lora` (UD-Q4_K_XL base) | 0.934 | 1.00 | 1298 s |
-| RTX 3090, this recipe | 0.908 | 0.979 | 270 s |
-| RX 7900 XTX, this recipe | 0.882 | 0.979 | 273 s |
+| | avg of 34 | SVG (6) | time for all 40 | tok/s over all 40 |
+|---|---|---|---|---|
+| RTX 3090, llama.cpp GGUF + `--lora` (UD-Q4_K_XL base) | 0.934 | 1.00 | 1298 s | 33.3 |
+| RTX 3090, this recipe | 0.908 | 0.979 | 270 s | 146.6 |
+| RX 7900 XTX, this recipe | 0.882 | 0.979 | 273 s | n/a (server reports no token counts) |
 
 The suites are small (3-12 items each), so a gap under ~0.03 is one item. The 3090 and 7900 runs of this recipe differ
 by exactly one item (a 3D scene that throws on the 7900). Per-suite numbers and the item-level diffs are in

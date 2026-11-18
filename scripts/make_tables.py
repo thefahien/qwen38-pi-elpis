@@ -29,7 +29,9 @@ def bench(f):
     svg = [r for r in d["results"] if r["suite"] == "q_svg"]
     return {"core": round(st.mean(r["score"] for r in core), 3), "svg": round(st.mean(r["score"] for r in svg), 3),
             "suites": {s: round(d["suites"][s]["score"], 3) for s in CORE + ["q_svg"]},
-            "wall": round(sum(r["wall_s"] for r in d["results"])), "results": {r["id"]: r for r in d["results"]}}
+            "wall": round(sum(r["wall_s"] for r in d["results"])), "results": {r["id"]: r for r in d["results"]},
+            "agg_tps": (round(sum(r.get("completion_tokens") or 0 for r in d["results"]) / sum(r["wall_s"] for r in d["results"]), 1)
+                        if sum(r.get("completion_tokens") or 0 for r in d["results"]) else None)}
 
 
 def main():
@@ -52,9 +54,16 @@ def main():
         L.append(f"| {v['card']} | {v['ctx']} | {v['cache']} | {pt} | {v['found']} | {pf} | {v['peak_vram_mib']} of {v['vram_total_mib']} |")
     L += ["", "## llmbench quick suites", "", "Temperature 0, thinking off, max 8192 tokens. Graders are deterministic (unit tests, exact",
           "match, HTML/SVG/three.js structure checks); no LLM judge.", "",
-          "| run | " + " | ".join(CORE + ["q_svg"]) + " | avg of 34 | wall s |", "|---|" + "---|" * (len(CORE) + 3)]
+          "| run | " + " | ".join(CORE + ["q_svg"]) + " | avg of 34 | wall s | tok/s |", "|---|" + "---|" * (len(CORE) + 4)]
     for k, v in bn.items():
-        L.append(f"| {k} | " + " | ".join(str(v["suites"][s]) for s in CORE + ["q_svg"]) + f" | {v['core']} | {v['wall']} |")
+        tps = v["agg_tps"] if v["agg_tps"] is not None else "n/a"
+        L.append(f"| {k} | " + " | ".join(str(v["suites"][s]) for s in CORE + ["q_svg"]) + f" | {v['core']} | {v['wall']} | {tps} |")
+    L += ["", "tok/s = all completion tokens / all wall time over the 40 items. The ROCm TabbyAPI does not return token",
+          "counts (`usage` is null), so its llmbench file records 0 tokens and 0 tok/s per item; its scores and wall times",
+          "are valid, and its decode speed comes from `bench_api.py` above instead.", "",
+          "The llama.cpp row is the adapter as harness-hub ships it (`Qwen3.8-27B-pi-lora-F16.gguf` applied with `--lora`),",
+          "on unsloth `Qwen3.8-27B-UD-Q4_K_XL` rather than the Q8_0 base its card recommends (Q8_0 is 28.6 GB and does not fit",
+          "a 24 GB card). No draft model."]
     names = list(bn)
     L += ["", "### Items that differ between runs", ""]
     for a, b in [(names[0], names[1]), (names[1], names[2])]:
@@ -74,6 +83,10 @@ def main():
             f"{nd['rtx3090']['prompt_tokens']:,} tokens", f"{nd['7900xtx']['prompt_tokens_server']:,} tokens"]
     for k, v in bn.items():
         must += [f"| {v['core']:.3f} | ", f"| {v['wall']} s |"]
+    lc = bn["RTX 3090, llama.cpp + --lora"]["agg_tps"]
+    ex = bn["RTX 3090, EXL3 + DFlash2"]["agg_tps"]
+    for m_ in (f"{ex} vs\n{lc} tok/s", f"{round(ex / lc, 1)}x the generation speed", f"| {lc} |", f"| {ex} |"):
+        assert m_ in readme, f"README speed claim out of date: {m_!r}"
     missing = [m for m in must if m not in readme]
     assert not missing, f"README out of date: {missing}"
     print("tables written; README numbers match results/")

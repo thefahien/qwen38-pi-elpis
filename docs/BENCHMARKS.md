@@ -31,11 +31,19 @@ Needle (a random 6-digit code) at 97% depth of a random-word filler prompt, gree
 Temperature 0, thinking off, max 8192 tokens. Graders are deterministic (unit tests, exact
 match, HTML/SVG/three.js structure checks); no LLM judge.
 
-| run | q_code | q_reason | q_web | q_3d | q_agent | q_svg | avg of 34 | wall s |
-|---|---|---|---|---|---|---|---|---|
-| RTX 3090, llama.cpp + --lora | 1.0 | 0.833 | 1.0 | 0.917 | 1.0 | 1.0 | 0.934 | 1298 |
-| RTX 3090, EXL3 + DFlash2 | 0.9 | 0.833 | 1.0 | 0.958 | 1.0 | 0.979 | 0.908 | 270 |
-| RX 7900 XTX, EXL3 + DFlash2 (ROCm) | 0.9 | 0.833 | 1.0 | 0.667 | 1.0 | 0.979 | 0.882 | 273 |
+| run | q_code | q_reason | q_web | q_3d | q_agent | q_svg | avg of 34 | wall s | tok/s |
+|---|---|---|---|---|---|---|---|---|---|
+| RTX 3090, llama.cpp + --lora | 1.0 | 0.833 | 1.0 | 0.917 | 1.0 | 1.0 | 0.934 | 1298 | 33.3 |
+| RTX 3090, EXL3 + DFlash2 | 0.9 | 0.833 | 1.0 | 0.958 | 1.0 | 0.979 | 0.908 | 270 | 146.6 |
+| RX 7900 XTX, EXL3 + DFlash2 (ROCm) | 0.9 | 0.833 | 1.0 | 0.667 | 1.0 | 0.979 | 0.882 | 273 | n/a |
+
+tok/s = all completion tokens / all wall time over the 40 items. The ROCm TabbyAPI does not return token
+counts (`usage` is null), so its llmbench file records 0 tokens and 0 tok/s per item; its scores and wall times
+are valid, and its decode speed comes from `bench_api.py` above instead.
+
+The llama.cpp row is the adapter as harness-hub ships it (`Qwen3.8-27B-pi-lora-F16.gguf` applied with `--lora`),
+on unsloth `Qwen3.8-27B-UD-Q4_K_XL` rather than the Q8_0 base its card recommends (Q8_0 is 28.6 GB and does not fit
+a 24 GB card). No draft model.
 
 ### Items that differ between runs
 
